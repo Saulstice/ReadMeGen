@@ -28,7 +28,7 @@ inquirer
         {
             type: "input",
             message: questions[2],
-            name: "installation instructions"
+            name: "installation"
         },
         {
             type: "input",
@@ -38,12 +38,12 @@ inquirer
         {
             type: "input",
             message: questions[4],
-            name: "contribution guidelines"
+            name: "contribution"
         },
         {
             type: "input",
             message: questions[5],
-            name: "test instructions"
+            name: "test"
         },
         {
             type: "list",
@@ -67,7 +67,7 @@ inquirer
         }
 
 
-    ]).then(function(data) {
+    ]).then(function (data) {
         console.log(data);
         var filename = "README.md";
         writeToFile(filename, data);
@@ -76,14 +76,50 @@ inquirer
 
 // function to write README file
 function writeToFile(fileName, data) {
-    fs.writeFile(fileName, "", function(err) {
+    fs.writeFile(fileName, "", function (err) {
         if (err) {
             return console.log(err);
         }
 
         console.log("Done")
     });
-    fs.appendFileSync(fileName, data.title);
+
+    // Appending title to readme
+    fs.appendFileSync(fileName, ("# " + data.title + "\n \n"));
+
+    // Appending description section
+    fs.appendFileSync(fileName, ("## Description \n \n"))
+    fs.appendFileSync(fileName, (data.description + "\n \n"))
+
+    // Appending table of contents with section links 
+    fs.appendFileSync(fileName, ("## Table of Contents \n")) 
+    fs.appendFileSync(fileName, ("[Go to Installation section](##-installation)\n"));
+    fs.appendFileSync(fileName, ("[Go to Usage section](##-usage)\n"));
+    fs.appendFileSync(fileName, ("[Go to License section](##-license)\n\n"));
+    // Appending installation section
+    fs.appendFileSync(fileName, ("## Installation \n \n"))
+    fs.appendFileSync(fileName, (data.installation + "\n\n"))
+
+    // Appending usage section
+    fs.appendFileSync(fileName, ("## Usage \n"))
+    fs.appendFileSync(fileName, (data.usage + "\n\n"))
+    // Appending License
+    fs.appendFileSync(fileName, ("## License \n"))
+    fs.appendFileSync(fileName, (data.license + "\n \n"))
+
+    // Appending contribution guidelines
+    fs.appendFileSync(fileName, ("## Contributing \n"))
+    fs.appendFileSync(fileName, (data.contribution + "\n\n"))
+
+    // Appending test instructions
+    fs.appendFileSync(fileName, ("## Tests \n"))
+    fs.appendFileSync(fileName, (data.test + "\n\n"))
+
+    // Appending questions section
+    fs.appendFileSync(fileName, ("## Questions \n If you have any additional questions here is where you can reach me: \n"))
+    //Appending github link
+    fs.appendFileSync(fileName, ("https://github.com/" + data.github + "\n"))
+    fs.appendFileSync(fileName, (data.email + "\n"))
 }
 
 // function to initialize program
@@ -96,4 +132,4 @@ init();
 
 
 
- 
+
