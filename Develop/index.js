@@ -73,7 +73,7 @@ inquirer
         licenses.forEach(thisLicense => {
             if(data.license === thisLicense.name){
                 thisName = thisLicense.name;
-                thisKey = thisLicense.key;
+                thisKey = thisLicense.key.split("-").join("");
             }
         });
         var filename = "README.md";
