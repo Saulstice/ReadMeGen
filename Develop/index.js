@@ -1,5 +1,8 @@
 const fs = require("fs");
 const inquirer = require('inquirer');
+const licenses = require("./licenses")
+
+// console.log(licenses);
 
 // array of questions for user
 const questions = ["What's your project title? ",
@@ -33,7 +36,7 @@ inquirer
         {
             type: "input",
             message: questions[3],
-            name: "usage info"
+            name: "usage"
         },
         {
             type: "input",
@@ -49,11 +52,7 @@ inquirer
             type: "list",
             message: questions[6],
             name: "license",
-            choices: [
-                "A",
-                "b",
-                "c"
-            ]
+            choices: licenses
         },
         {
             type: "input",
@@ -69,6 +68,14 @@ inquirer
 
     ]).then(function (data) {
         console.log(data);
+        const name = "";
+        const key = "";
+        licenses.forEach(thisLicense => {
+            if(data.license === thisLicense.name){
+                thisName = thisLicense.name;
+                thisKey = thisLicense.key;
+            }
+        });
         var filename = "README.md";
         writeToFile(filename, data);
     })
@@ -88,7 +95,8 @@ function writeToFile(fileName, data) {
     fs.appendFileSync(fileName, ("# " + data.title + "\n \n"));
 
     // Appending description section
-    fs.appendFileSync(fileName, ("## Description \n \n"))
+    fs.appendFileSync(fileName, ("## Description\n"))
+    fs.appendFileSync(fileName, ("[![License](https://img.shields.io/badge/License-" + thisKey + "-Brightgreen)](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/licensing-a-repository)"))
     fs.appendFileSync(fileName, (data.description + "\n \n"))
 
     // Appending table of contents with section links 
@@ -97,26 +105,28 @@ function writeToFile(fileName, data) {
     fs.appendFileSync(fileName, ("[Go to Usage section](##-usage)\n"));
     fs.appendFileSync(fileName, ("[Go to License section](##-license)\n\n"));
     // Appending installation section
-    fs.appendFileSync(fileName, ("## Installation \n \n"))
+    fs.appendFileSync(fileName, ("## Installation\n"))
     fs.appendFileSync(fileName, (data.installation + "\n\n"))
 
     // Appending usage section
-    fs.appendFileSync(fileName, ("## Usage \n"))
+    fs.appendFileSync(fileName, ("## Usage\n"))
     fs.appendFileSync(fileName, (data.usage + "\n\n"))
     // Appending License
-    fs.appendFileSync(fileName, ("## License \n"))
-    fs.appendFileSync(fileName, (data.license + "\n \n"))
+    fs.appendFileSync(fileName, ("## License\n"))
+    fs.appendFileSync(fileName, ("### " + data.license + "\n"))
+    fs.appendFileSync(fileName, ("This application is covered under the " + data.license + " license.\n"))
+    fs.appendFileSync(fileName, ("[![License](https://img.shields.io/badge/License-" + thisKey + "-Brightgreen)](https://docs.github.com/en/github/creating-cloning-and-archiving-repositories/licensing-a-repository)\n\n"))
 
     // Appending contribution guidelines
-    fs.appendFileSync(fileName, ("## Contributing \n"))
+    fs.appendFileSync(fileName, ("## Contributing\n"))
     fs.appendFileSync(fileName, (data.contribution + "\n\n"))
 
     // Appending test instructions
-    fs.appendFileSync(fileName, ("## Tests \n"))
+    fs.appendFileSync(fileName, ("## Tests\n"))
     fs.appendFileSync(fileName, (data.test + "\n\n"))
 
     // Appending questions section
-    fs.appendFileSync(fileName, ("## Questions \n If you have any additional questions here is where you can reach me: \n"))
+    fs.appendFileSync(fileName, ("## Questions\nIf you have any additional questions here is where you can reach me: \n"))
     //Appending github link
     fs.appendFileSync(fileName, ("https://github.com/" + data.github + "\n"))
     fs.appendFileSync(fileName, (data.email + "\n"))
